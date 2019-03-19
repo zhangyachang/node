@@ -1,39 +1,38 @@
 const http = require('http');
+const url = require('url');
+const utils = require('./utils/utils');
+const logic = require('./module/logic');
 
-/**
- *  对于一个Web应用而言，仅仅只是上面这样的响应远远达不到业务的需求。再具体的业务中，有可能会有如下这些需求
- *  请求方法的判断
- *  URL的路径解析
- *  URL中查询字符串解析
- *  Cookie的解析
- *  Basic认证
- *  表达数据的解析
- *  任意格式文件的上传处理
- *  除此之外，可能还有session(会话)的需求
- * 
- */
+
+
 const server = http.createServer((req, res) => {
-
-    res.writeHead(200, {"Content-Type": "text/html; charset=utf8"});
-    var str = `<h1>字符串</h1>`
-    // res.end('Hello world\n');
-    res.write(str);
+    // 解析ip地址
+    // const ip = utils.getClientIp(req);
+   
     
-    setTimeout(() => {
-        res.write('aaaaa\n');
-    },100);
-    setTimeout(() => {
-        res.write('bbb\n');
-    },2000);
-    setTimeout(() => {
-        res.write('ccc\n');
-    },3000);
-    setTimeout(() => {
-        res.write('dddd\n');
-        res.end();
-    },4000);
+    // 解析请求方法
+    // logic.reqMethod(req, res);
 
-    
+    // 静态资源服务器
+    // logic.publicFile(req, res);
+
+    // 分发资源
+    // logic.distribution(req, res);
+
+    // 解析字符串
+    // logic.parseUrl(req, res);
+
+    // 解析cookie
+    // logic.cookie(req, res);
+
+    // 设置Cookie
+    // logic.setCookie(req, res);
+
+    // 请求cookie到来了, 此方法暂未实现
+    // logic.addSession(req, res);
+
+
+    logic.basic(req, res);
 
 });
 
@@ -41,5 +40,3 @@ const server = http.createServer((req, res) => {
 server.listen(3000, () => {
     console.log('3000端口服务启动成功');
 });
-
-

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <script>
+        
+        axios.get('/',{
+            params: {
+                age: '111',
+                name: 'bbb'
+            },
+            headers: {'Authorization': 'Basic bXhhZG1pbjo5ODc4NTI='}
+        })
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log('返回了错误信息');
+                console.log(err);
+            })
+
+    </script>
+
+
+
+
+
+
+    <script>
+        
+        /**
+         * 小工具函数，消除arr中item不存在的
+         * 
+         */
+        var arr = [400,100,600];
+
+        var item = [
+            {id: 100},
+            {id: 200},
+            {id: 400},
+            {id: 600}
+        ];
+
+        for(var i=item.length-1;i>=0;i--){
+            var flag = false; // 默认不存在
+
+            for(var j=0;j<arr.length;j++){
+                if(item[i].id == arr[j]){
+                    flag = true;  // true存在  
+                }
+
+                if(j == arr.length-1 && !flag){
+                    item.splice(i,1); 
+                }
+            }
+        }
+
+        console.log(arr);
+        console.log(item);
+
+    </script>
+</body>
+</html>
