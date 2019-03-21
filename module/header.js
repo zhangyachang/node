@@ -4,6 +4,8 @@ const path = require('path');
 const querystring = require('querystring');
 const utils = require('../utils/utils');
 const config = require('../config/config');
+const axios = require('axios');
+
 
 
 /**
@@ -286,11 +288,8 @@ exports.setSessionForClient = function(){
   */
 
 exports.basic = function(req, res){
-
     console.log('basic认证');
-
     var token = 'mxadmin:987852';
-
     var a = utils.NodeBase().encode(token);
     console.log(a);
     var token1 = 'Basic ' + a;
@@ -310,11 +309,3 @@ exports.basic = function(req, res){
 
     res.end('basic认证');
 }
-
-
-
-
-
-
-
-

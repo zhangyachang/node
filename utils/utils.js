@@ -25,6 +25,18 @@ exports.getClientIp = function(req){
 
 
 /**
+ * 判断请求体中有没有内容
+ * @params {Object} req
+ * 
+ */
+exports.hasBody = function(req){
+    // 这里的 content-length 我知道  transfer-encoding 是什么
+    // https://www.jianshu.com/p/ab38eb9ba8cb 可以去这篇文章中看一下
+    return 'transfer-encoding' in req.headers || 'content-length' in req.headers
+}
+
+
+/**
  * 解析cookie
  * 
  * @params {String} cookie 
