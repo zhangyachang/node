@@ -5,11 +5,20 @@ const header = require('./module/header');
 const dataPost = require('./module/dataPost');
 
 
-
 const server = http.createServer((req, res) => {
     // 解析ip地址
     // const ip = utils.getClientIp(req);
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');  // 解决 Cors 跨域
+
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');  // 解决 Cors 跨域
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
+    res.setHeader('charset', 'utf8');
+
+    console.log('情求者的ip');
+    const ip = utils.getTruthClientIp(req);
+    console.log(ip);
+    console.log(req.headers.origin)
+    
 
     const headerArr = {
         '/method': header.reqMethod, // 解析请求方法
@@ -28,9 +37,12 @@ const server = http.createServer((req, res) => {
     }
 
     const {pathname, query} = url.parse(req.url, true);
-    console.log('查看请求信息');
-    console.log(pathname, query);
     req.query = query;
+    req.pathname = pathname;
+    console.log('-------查看请求头-------');
+    console.log(req.url);
+    console.log(req.headers);
+    console.log('-------查看请求头结束-------');
 
     if (headerArr[pathname]) {
         headerArr[pathname](req, res);
@@ -48,7 +60,7 @@ const server = http.createServer((req, res) => {
     }
 
     // res.end('Hello world');
-
+    
 });
 
 

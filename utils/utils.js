@@ -1,4 +1,7 @@
 const config = require('../config/config');
+const querystring = require('querystring');
+const xml2js = require('xml2js');
+
 
 exports.judgeReqMethods = function(){
 
@@ -6,7 +9,10 @@ exports.judgeReqMethods = function(){
 
 
 /**
- *  获取访问者的ip地址
+ * 获取访问者的ip地址
+ * 这里的方法好像是不可行的，但是有一篇文章看起来可信度比较高，可以查看原文地址，可以获取真正的ip地址，
+ * 请求头中携带的 ip 都不可信，Remote Address 是实际的
+ * https://imququ.com/post/x-forwarded-for-header-in-http.html
  * 
  *  @params {Object} req 请求对象
  *  @return {String} ip
@@ -22,6 +28,93 @@ exports.getClientIp = function(req){
     }
     return ip;
 }
+
+exports.getTruthClientIp = function(req){
+    return req.connection.remoteAddress;
+}
+
+/**
+ * 解析 post 请求的数据，根据不同的类型去分别的解析
+ * 把解析到的东西通过 json 格式挂载到 req.body 中
+ * 
+ * @params req
+ * @params res
+ * 
+ * 最为常见的数据提交就是通过网页表单提交数据到服务器端 
+ * 默认的表单提交，请求头中的 Content-Type 字段值为 application/x-www-form-urlencoded
+ * 除了表单之外，常见的提交还有 JSON 和 XML 文件等。
+ * 判断和解析他们的原理都比较相似，都是依据 Content-Type中的值决定的。
+ * JSON 类型的值为 application/json
+ * XML 的值为 application/xml。
+ * 需要注意的是，在Content-Type中还可能附带如下所示的编码信息
+ * Content-Type: application/json; charset=utf-8
+ * 所以在判断时，需要注意区分，如下所示
+    var mime = function (req) { 
+        var str = req.headers['content-type'] || ''; 
+        return str.split(';')[0]; 
+    };
+ * 
+ * 可以看到下面的方法，无论客户端提交的是什么格式，我们都可以通过这种方式来判断数据是何种类型，然后采用对应的解析方法即可。
+ * 
+ */
+exports.postData = function(req, res){
+    const TYPE = {
+
+        'application/x-www-form-urlencoded'(){
+            req.body = querystring.parse(req.rawBody);
+        },
+
+        'application/json'(){
+            try{
+                // 如果从客户端提交 JSON 内容，对于 Node 来说，要处理它都不需要额外的任何库
+                req.body = JSON.parse(req.rawBody);
+            }catch(e){
+                // 异常内容, 响应 Bad Request
+                res.writeHead(400);
+                res.end('Invlid JSON');
+                return ;
+            }
+        },
+
+        'application/xml'(){
+            // 解析 XML 文件稍微复杂一点，但是社区有支持 XML 文件到 JSON 文件转换的库，比如有  xml2js
+            xml2js.parseString(req.rawBody, function(err, xml){
+                if(err){
+                    res.writeHead(400);
+                    res.end('Invalid XML');
+                    return ;
+                }
+                req.body = xml;
+            });
+        }
+        
+    }
+
+    function contentType(req){
+        const str = req.headers['content-type'] || '';
+        return str.split(';')[0];
+    }
+
+    const postType = contentType(req);
+    console.log('请求数据类型' + postType);
+    
+    if( postType === 'application/x-www-form-urlencoded'){
+        console.log('application/x-www-form-urlencoded');
+        TYPE[postType]();
+    }else if(postType === 'application/json'){
+        console.log('application/json');
+        TYPE[postType]();
+    }else if(postType === 'application/xml'){
+        console.log('application/xml');
+        TYPE[postType]();
+    }else{
+        console.log('没有匹配到吧');
+        req.body = {};
+    }
+}
+
+
+
 
 
 /**

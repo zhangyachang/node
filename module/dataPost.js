@@ -6,6 +6,7 @@ const utils = require('../utils/utils');
 const config = require('../config/config');
 const axios = require('axios');
 
+
 /**
  * 这里主要写的一些方法是数据上传的一些解析
  * header.js 中的内容都集中在 HTTP 请求报头文中，适用于 GET 请求和大多数的其他请求。
@@ -39,11 +40,16 @@ exports.uploadBody = (req, res) => {
         });
         
         req.on('end', () => {
-            console.log('这里的是后面执行的了2');
             //  Buffer.concat()内部做了一些封装，非常好的方法
-            console.log(buffers);
             req.rawBody = Buffer.concat(buffers).toString();
+            console.log('查看buffer数据和转换为字符串后的值');
+            console.log(buffers);
             console.log(req.rawBody);
+            console.log('调用解析函数,解析body');
+            utils.postData(req, res);
+            console.log(req.body);
+            console.log(JSON.stringify(req.body));
+            
             res.end('Hello world');
         });   
     }else{
