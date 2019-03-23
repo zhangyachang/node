@@ -20,12 +20,6 @@ const axios = require('axios');
  * 
  */
 
-/**
- * 
- * 
- * 
- */
-
 exports.uploadBody = (req, res) => {
     const isBody = utils.hasBody(req);
     console.log(isBody);
@@ -49,19 +43,51 @@ exports.uploadBody = (req, res) => {
             utils.postData(req, res);
             console.log(req.body);
             console.log(JSON.stringify(req.body));
-            
+
             res.end('Hello world');
         });   
     }else{
         res.end('没有请求体的数据');
     }
-
-
-    
-
-
 };
 
+
+
+/**
+ * 附件上传的报文头
+ * 
+ * 
+ */
+
+exports.fileData = function(req, res){
+    const isBody = utils.hasBody(req);
+    console.log(isBody);
+    console.log('提交到了附件上传接口');
+    if(isBody){
+        console.log('-----------是post请求或者带有请求信息-----------------------');
+        console.log('query的值');
+        console.log(req.query);
+
+        var buffers = [];
+        req.on('data', (chunk) => {
+            buffers.push(chunk);
+        });
+        
+        req.on('end', () => {
+            //  Buffer.concat()内部做了一些封装，非常好的方法
+            req.rawBody = Buffer.concat(buffers).toString();
+            console.log('查看buffer数据和转换为字符串后的值');
+            console.log(buffers);
+            console.log(req.rawBody);
+            utils.postData(req, res);
+            console.log(req.body);
+            res.end('Hello world');
+        });   
+    }else{
+        res.end('没有请求体的数据');
+    }
+    
+}
 
 
 

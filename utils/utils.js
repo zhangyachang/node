@@ -114,6 +114,78 @@ exports.postData = function(req, res){
 }
 
 
+/**
+ * 除了常见的表单和特殊格式的内容提交外，还有一种比较独特的表单。
+ * 通常的表单，其内容可以通过 urlencode 的方式编码内容形成报文体，再发送给服务器，但是业务场景往往需要用户直接提交文件。
+ * 在前端 HTML 代码中，特殊表单与普通表单的差异在于该表单中可以含有 file类型的控件，以及需要
+ * 指定表单属性 enctype 为 multipart/form-data 
+    <form action="/upload" method="post" enctype="multipart/form-data"> 
+        <label for="username">Username:</label> <input type="text" name="username" id="username" /> 
+        <label for="file">Filename:</label> <input type="file" name="file" id="file" /> 
+        <br /> 
+        <input type="submit" name="submit" value="Submit" /> 
+    </form> 
+ * 
+ * 浏览器在遇到 multipart/form-data 表单提交时，构造的请求报文与普通表单完全不同。
+ * 首先它的报头中最为特殊的如下所示。
+ * 
+ * Content-Type: multipart/form-data; boundary=AaB03x 
+ * Content-Length: 18231 
+ * 
+ * 它代表本次提交的内容是由多部分构成的，其中 boundary=AaBo3x 指定的是每部分内容的分界符， AaBo3x 是随机生成的一段字符串，
+ * 
+ * 报文体中的内容将通过在它前面添加 -- 进行分割，报文结束时在它前后都加上 -- 表示结束。
+ * （下面有一串我自己上传的乱码的部分，可以看，我删除了一部分乱码）
+ * 
+ * 另外，Content-Length的值必须确保是报文体的长度。
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+/*
+
+------WebKitFormBoundaryBALjHlmN6Da2FPrA
+Content-Disposition: form-data; name="user"
+
+aa
+------WebKitFormBoundaryBALjHlmN6Da2FPrA
+Content-Disposition: form-data; name="password"
+
+aaa
+------WebKitFormBoundaryBALjHlmN6Da2FPrA
+Content-Disposition: form-data; name="file"; filename="logopng1.png"
+Content-Type: image/png
+
+�PNG
+
+IHDR   �  5/nnK߽1`/��Ij>�╗!║6W@P ╝║BP ╝║BA�A�╝║BP ╝║BP ╝A���� �*=��~r�    IEND�B`�
+------WebKitFormBoundaryBALjHlmN6Da2FPrA--
+
+*/
+
+/*
+    第二段 没有文件控件的
+------WebKitFormBoundaryeue4mMTk90SXEuJb
+Content-Disposition: form-data; name="user"
+
+123
+------WebKitFormBoundaryeue4mMTk90SXEuJb
+Content-Disposition: form-data; name="password"
+
+aaa
+------WebKitFormBoundaryeue4mMTk90SXEuJb--
+
+*/
+
+
 
 
 

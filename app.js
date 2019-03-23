@@ -3,23 +3,21 @@ const url = require('url');
 const utils = require('./utils/utils');
 const header = require('./module/header');
 const dataPost = require('./module/dataPost');
+const fn = require('./router/router');
 
 
 const server = http.createServer((req, res) => {
     // 解析ip地址
-    // const ip = utils.getClientIp(req);
 
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');  // 解决 Cors 跨域
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
-    res.setHeader('charset', 'utf8');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-    console.log('情求者的ip');
-    const ip = utils.getTruthClientIp(req);
-    console.log(ip);
-    console.log(req.headers.origin)
     
+    fn(req, res);
 
+
+    /*
     const headerArr = {
         '/method': header.reqMethod, // 解析请求方法
         '/public': header.publicFile,    // 静态资源服务器
@@ -34,6 +32,7 @@ const server = http.createServer((req, res) => {
 
     const postArr = {
         '/uploadBody': dataPost.uploadBody, // 处理请求体中的内容
+        '/file': dataPost.fileData,
     }
 
     const {pathname, query} = url.parse(req.url, true);
@@ -59,8 +58,8 @@ const server = http.createServer((req, res) => {
         res.end(msg);
     }
 
-    // res.end('Hello world');
-    
+    */
+
 });
 
 

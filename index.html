@@ -10,20 +10,61 @@
     <script src="./node_modules/axios/dist/axios.js"></script>
     <script>
         
-        axios.get('/',{
-            params: {
-                age: '111',
-                name: 'bbb'
-            },
-            headers: {'Authorization': 'Basic bXhhZG1pbjo5ODc4NTI='}
-        })
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                console.log('返回了错误信息');
-                console.log(err);
-            })
+        // axios.get('/',{
+        //     params: {
+        //         age: '111',
+        //         name: 'bbb'
+        //     },
+        //     headers: {'Authorization': 'Basic bXhhZG1pbjo5ODc4NTI='}
+        // })
+        //     .then(res => {
+        //         console.log(res.data);
+        //     })
+        //     .catch(err => {
+        //         console.log('返回了错误信息');
+        //         console.log(err);
+        //     })
+
+
+        // console.log('中间件');
+
+        
+
+
+
+
+        // var middleware = function(req, res, next){
+        //     // TODO
+        //     next();
+        // }
+
+        // class Routes {
+        //     constructor(){
+        //         this.length = 0;
+        //         this.routes = [];
+        //     }
+        //     use(path, action){
+        //         console.log('加入了路由' + this.length++);
+        //         this.routes.push([path, action]);
+        //     }
+        // }
+
+        // const routes = new Routes
+
+        // routes.use('/aaa', function(aaa){
+        //     console.log(111)
+        // });
+        // routes.use('/bbb', function(aaa){
+        //     console.log(111)
+        // });
+
+        // console.log(routes)
+
+
+        // console.log(a);
+
+        
+
 
     </script>
 
@@ -32,7 +73,7 @@
 
 
 
-    <script>
+    <!-- <script>
         
         /**
          * 小工具函数，消除arr中item不存在的
@@ -64,6 +105,6 @@
         console.log(arr);
         console.log(item);
 
-    </script>
+    </script> -->
 </body>
 </html>
