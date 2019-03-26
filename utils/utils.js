@@ -138,11 +138,8 @@ exports.postData = function(req, res){
  * （下面有一串我自己上传的乱码的部分，可以看，我删除了一部分乱码）
  * 
  * 另外，Content-Length的值必须确保是报文体的长度。
- * 
- * 
- * 
- * 
- * 
+ * 一旦我们知晓报文是如何构成的，那么解析它就变得十分容易。值得注意的一点是，由于是文件上传，那么像普通表单、JSON 或 XML 
+ * 那样先接收内容再解析的方式将变得不可接受。接收大小未知的数据量时，我们需要十分谨慎。
  * 
  * 
  * 
@@ -182,7 +179,6 @@ Content-Disposition: form-data; name="password"
 
 aaa
 ------WebKitFormBoundaryeue4mMTk90SXEuJb--
-
 */
 
 

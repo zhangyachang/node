@@ -3,7 +3,7 @@ const url = require('url');
 const utils = require('./utils/utils');
 const header = require('./module/header');
 const dataPost = require('./module/dataPost');
-const fn = require('./router/router');
+// const fn = require('./router/router');
 
 
 const server = http.createServer((req, res) => {
@@ -12,12 +12,16 @@ const server = http.createServer((req, res) => {
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');  // 解决 Cors 跨域
 
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+   
 
     
-    fn(req, res);
+    // fn(req, res);
 
 
-    /*
+    
     const headerArr = {
         '/method': header.reqMethod, // 解析请求方法
         '/public': header.publicFile,    // 静态资源服务器
@@ -58,7 +62,7 @@ const server = http.createServer((req, res) => {
         res.end(msg);
     }
 
-    */
+    
 
 });
 
