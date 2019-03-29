@@ -62,8 +62,41 @@
 
 
         // console.log(a);
-
         
+
+        function Vue(){
+            this.aa = 'aa'
+        }
+
+        Vue.prototype.say = {
+            name:'aaa',
+            age: 20
+        };
+
+        var vue1 = new Vue();
+        console.log(vue1);
+
+        var vue2 = new Vue();
+
+        /* 修改值的方式 */
+        vue2.say = {
+            cc: 111
+        };
+        console.log(vue2);
+
+        var vue3 = new Vue();
+        console.log(vue3);
+        
+
+
+        var vue4 = new Vue();
+        vue4.say.add = '新增加的东西';
+        console.log(vue4);
+        
+
+
+
+
 
 
     </script>
