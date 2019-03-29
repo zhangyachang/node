@@ -12,16 +12,15 @@ const server = http.createServer((req, res) => {
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');  // 解决 Cors 跨域
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-   
 
+   
     
     // fn(req, res);
 
 
-    
     const headerArr = {
         '/method': header.reqMethod, // 解析请求方法
         '/public': header.publicFile,    // 静态资源服务器
@@ -31,7 +30,7 @@ const server = http.createServer((req, res) => {
         '/setCookie': header.setCookie, // 设置Cookie
         '/addSession': header.addSession, // 请求cookie到来了, 此方法暂未实现
         '/basic': header.basic,  // basic 认证，还未完成
-        
+
     };
 
     const postArr = {
@@ -39,7 +38,7 @@ const server = http.createServer((req, res) => {
         '/file': dataPost.fileData,
     }
 
-    const {pathname, query} = url.parse(req.url, true);
+    const { pathname, query } = url.parse(req.url, true);
     req.query = query;
     req.pathname = pathname;
     console.log('-------查看请求头-------');
@@ -49,12 +48,12 @@ const server = http.createServer((req, res) => {
 
     if (headerArr[pathname]) {
         headerArr[pathname](req, res);
-    }else if(postArr[pathname]){
+    } else if (postArr[pathname]) {
         console.log("是请求到post里面来了吧");
         postArr[pathname](req, res);
-    }else{
+    } else {
         console.log('还是请求到这里来了吗');
-        
+
         let msg = JSON.stringify({
             status: '错误了',
             msg: 'error'
@@ -62,7 +61,7 @@ const server = http.createServer((req, res) => {
         res.end(msg);
     }
 
-    
+
 
 });
 

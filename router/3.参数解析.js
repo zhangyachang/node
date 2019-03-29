@@ -71,5 +71,3 @@ const fn = function (req, res) {
  * 至此，我们除了从查询字符串（req.query）或提交数据（req.body）中取到值之外，还能从路径的映射取到值。
  * 
  */
-
-
